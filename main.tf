@@ -14,13 +14,13 @@ provider "google" {
   zone    = "us-central1-c"
 }
 
-resource "google_project" "my_project" {
+resource "google_project" "terraform-first-app" {
   name       = "terraform-first-app"
   project_id = "terraform-first-app"
   org_id     = "1234567"
 }
 
 resource "google_app_engine_application" "app" {
-  project     = google_project.my_project.project_id
+  project     = google_project.terraform-first-app.project_id
   location_id = "us-central"
 }
