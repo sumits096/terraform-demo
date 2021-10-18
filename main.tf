@@ -15,7 +15,7 @@ provider "google" {
 }
 
 resource "google_project" "my_project" {
-  name       = "My Project"
+  name       = "terraform-first-app"
   project_id = "terraform-first-app"
   org_id     = "1234567"
 }
