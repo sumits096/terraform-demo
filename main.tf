@@ -17,7 +17,7 @@ provider "google" {
 resource "google_project" "terraform-first-app" {
   name       = "terraform-first-app"
   project_id = "terraform-first-app"
-  org_id     = "1234567"
+  org_id     = "12345677"
 }
 
 resource "google_app_engine_application" "app" {
