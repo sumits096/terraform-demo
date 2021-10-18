@@ -17,3 +17,14 @@ provider "google" {
 resource "google_compute_network" "vpc_network" {
   name = "terraform-network"
 }
+
+data "terraform_remote_state" "network" {
+  backend = "remote"
+
+  config = {
+    organization = IX
+    workspaces = {
+          name = terraform-demo
+    }
+  }
+}
