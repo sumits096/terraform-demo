@@ -22,9 +22,9 @@ data "terraform_remote_state" "network" {
   backend = "remote"
 
   config = {
-    organization = IX
+    organization = var.IX
     workspaces = {
-          name = terraform-demo
+          name = var.terraform-demo
     }
   }
 }
