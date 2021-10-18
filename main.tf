@@ -22,5 +22,5 @@ resource "google_project" "terraform-first-app" {
 
 resource "google_app_engine_application" "app" {
   project     = google_project.terraform-first-app.project_id
-  location_id = "us-central1"
+  location_id = "us-central"
 }
