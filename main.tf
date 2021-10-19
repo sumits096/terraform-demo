@@ -14,14 +14,14 @@ provider "google" {
   zone    = "us-central1-c"
 }
 
-resource "google_cloud_run_service" "default" {
+resource "google_cloud_run_service" "run_service" {
   name     = "terraform-first-app"
   location = "us-central1"
 
   template {
     spec {
       containers {
-        image = "us-docker.pkg.dev/cloudrun/container/hello"
+        image = "gcr.io/terraform-first-app/hello-app:2.0"
       }
     }
   }
