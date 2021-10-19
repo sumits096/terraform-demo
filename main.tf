@@ -14,7 +14,7 @@ provider "google" {
   zone    = "us-central1-c"
 }
 
-resource "google_cloud_run_service" "run_service" {
+resource "google_cloud_run_service" "terraform-cloud-run" {
   name     = "terraform-first-app"
   location = "us-central1"
 
@@ -37,9 +37,9 @@ data "google_iam_policy" "noauth" {
 }
 
 resource "google_cloud_run_service_iam_policy" "noauth" {
-  location    = google_cloud_run_service.default.location
-  project     = google_cloud_run_service.default.project
-  service     = google_cloud_run_service.default.name
+  location    = google_cloud_run_service.terraform-cloud-run.location
+  project     = google_cloud_run_service.terraform-cloud-run.project
+  service     = google_cloud_run_service.terraform-cloud-run.name
 
   policy_data = data.google_iam_policy.noauth.policy_data
 }
