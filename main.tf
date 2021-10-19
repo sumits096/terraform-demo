@@ -25,4 +25,10 @@ resource "google_cloud_run_service" "terraform-cloud-run" {
       }
     }
   }
+
+  
+  traffic {
+    percent         = 100
+    latest_revision = true
+  }
 }
