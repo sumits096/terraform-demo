@@ -10,39 +10,36 @@ terraform {
 provider "google" {
   credentials = file("service-account.json")
   project = "terraform-first-app"
-  region  = "us-west2"
-  zone    = "us-west2-a"
+  region  = "us-central1"
+  zone    = "us-central1-c"
 }
 
-resource "google_compute_network" "vpc_network" {
-  name = "terraform-network"
-}
+resource "google_cloud_run_service" "default" {
+  name     = "cloudrun-srv"
+  location = "us-central1"
 
-resource "google_project" "terraform-first-app" {
-  name       = "terraform-first-app"
-  project_id = "terraform-first-app"
-  org_id     = "1001419021452"
-}
-
-resource "google_app_engine_application" "app" {
-  project     = google_project.terraform-first-app.project_id
-  location_id = "us-west"
-}
-
-resource "google_compute_instance" "vm_instance" {
-  name         = "terraform-instance"
-  machine_type = "f1-micro"
-
-  boot_disk {
-    initialize_params {
-      image = "debian-cloud/debian-9"
+  template {
+    spec {
+      containers {
+        image = "us-docker.pkg.dev/cloudrun/container/hello"
+      }
     }
   }
+}
 
-  network_interface {
-    # A default network is created for all GCP projects
-    network = "default"
-    access_config {
-    }
+data "google_iam_policy" "noauth" {
+  binding {
+    role = "roles/run.invoker"
+    members = [
+      "allUsers",
+    ]
   }
+}
+
+resource "google_cloud_run_service_iam_policy" "noauth" {
+  location    = google_cloud_run_service.default.location
+  project     = google_cloud_run_service.default.project
+  service     = google_cloud_run_service.default.name
+
+  policy_data = data.google_iam_policy.noauth.policy_data
 }
