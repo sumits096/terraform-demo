@@ -18,7 +18,7 @@ const express = require('express');
 const app = express();
 
 app.get('/', (req, res) => {
-  const name = process.env.NAME || 'CICD testing with terraform..';
+  const name = process.env.NAME || 'CICD testing with terraform...';
   res.send(`Test Changes ${name}!`);
 });
 
