@@ -15,7 +15,7 @@ provider "google" {
 }
 
 resource "google_cloud_run_service" "default" {
-  name     = "cloudrun-srv"
+  name     = "terraform-first-app"
   location = "us-central1"
 
   template {
