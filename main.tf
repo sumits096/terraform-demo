@@ -21,7 +21,7 @@ resource "google_cloud_run_service" "run_service" {
   template {
     spec {
       containers {
-        image = "gcr.io/terraform-first-app/hello-app:2.0"
+        image = "us-docker.pkg.dev/cloudrun/container/hello"
       }
     }
   }
