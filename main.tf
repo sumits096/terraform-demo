@@ -15,7 +15,7 @@ provider "google" {
 }
 
 resource "google_cloud_run_service" "terraform-cloud-run" {
-  name     = "terraform-first-app"
+  name     = "terraform-cloud-run"
   location = "us-central1"
 
   template {
