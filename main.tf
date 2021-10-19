@@ -14,8 +14,8 @@ provider "google" {
   zone    = "us-central1-c"
 }
 
-resource "google_cloud_run_service" "terraform-cloud-run" {
-  name     = "terraform-cloud-run"
+resource "google_cloud_run_service" "default" {
+  name     = "cloudrun-srv"
   location = "us-central1"
 
   template {
@@ -26,7 +26,6 @@ resource "google_cloud_run_service" "terraform-cloud-run" {
     }
   }
 
-  
   traffic {
     percent         = 100
     latest_revision = true
