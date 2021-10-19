@@ -10,8 +10,8 @@ terraform {
 provider "google" {
   credentials = file("service-account.json")
   project = "terraform-first-app"
-  region  = "us-central1"
-  zone    = "us-central1-c"
+  region  = "us-west2"
+  zone    = "us-west2-a"
 }
 
 resource "google_compute_network" "vpc_network" {
@@ -26,7 +26,7 @@ resource "google_project" "terraform-first-app" {
 
 resource "google_app_engine_application" "app" {
   project     = google_project.terraform-first-app.project_id
-  location_id = "us-central"
+  location_id = "us-west"
 }
 
 resource "google_compute_instance" "vm_instance" {
