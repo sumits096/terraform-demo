@@ -9,7 +9,7 @@ terraform {
 
 provider "google" {
   credentials = file("service-account.json")
-  project = "terraform-first-app"
+  project = "terraform-deployment-demo"
   region  = "us-central1"
   zone    = "us-central1-c"
 }
