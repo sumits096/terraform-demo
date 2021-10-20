@@ -21,7 +21,7 @@ provider "google" {
 # Compress source code
 data "archive_file" "source" {
   type        = "zip"
-  source_dir  = "../../"
+  source_file = "${path.module}/init.tpl"
   output_path = "${path.module}/files/function-${local.timestamp}.zip"
   # excludes    = [ "../../terraform" ]
 }
