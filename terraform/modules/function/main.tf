@@ -2,6 +2,22 @@ locals {
   timestamp = formatdate("YYMMDDhhmmss", timestamp())
 }
 
+terraform {
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+      version = "3.5.0"
+    }
+  }
+}
+
+provider "google" {
+  credentials = file("service-account.json")
+  project = var.project
+  region  = var.region
+  zone    = "us-central1-c"
+}
+
 # Compress source code
 data "archive_file" "source" {
   type        = "zip"
