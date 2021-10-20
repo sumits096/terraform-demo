@@ -9,14 +9,14 @@ terraform {
 
 provider "google" {
   credentials = file("service-account.json")
-  project = "terraform-deployment-demo"
-  region  = "us-central1"
+  project = var.project
+  region  = var.region
   zone    = "us-central1-c"
 }
 
 resource "google_cloud_run_service" "default" {
   name     = "cloudrun-srv"
-  location = "us-central1"
+  location = var.region
 
   template {
     spec {
