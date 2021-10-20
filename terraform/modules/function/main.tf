@@ -1,7 +1,3 @@
-locals {
-  timestamp = formatdate("YYMMDDhhmmss", timestamp())
-}
-
 terraform {
   required_providers {
     google = {
@@ -11,8 +7,12 @@ terraform {
   }
 }
 
+locals {
+  timestamp = formatdate("YYMMDDhhmmss", timestamp())
+}
+
 provider "google" {
-  credentials = file("service-account.json")
+  credentials = file("./service-account.json")
   project = var.project
   region  = var.region
   zone    = "us-central1-c"
