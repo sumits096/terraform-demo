@@ -18,25 +18,45 @@ provider "google" {
   zone    = "us-central1-c"
 }
 
-# Compress source code
-data "archive_file" "source" {
+
+resource null_resource dummy_trigger {
+  triggers = {
+    timestamp = timestamp()
+  }
+}
+
+resource "google_storage_bucket" "cloud-functions" {
+  project       = var.project
+  name          = "${var.project}-cloud-functions"
+  location      = var.region
+}
+
+resource "google_storage_bucket_object" "start_instance" {
+  name       = "start_instance.zip"
+  bucket     = google_storage_bucket.cloud-functions.name
+  source     = "${path.module}/start_instance.zip"
+  depends_on = [
+    data.archive_file.start_instance,
+  ]
+}
+
+data "archive_file" "start_instance" {
   type        = "zip"
-  source_dir  = "../../"
-  output_path = "/tmp/function-${local.timestamp}.zip"
-  # excludes    = [ "../../terraform" ]
-}
+  output_path = "${path.module}/start_instance.zip"
 
-# Create bucket that will host the source code
-resource "google_storage_bucket" "bucket" {
-  name = "${var.project}-function"
-}
+  source {
+    content  = file("${path.module}/scripts/start_instance/index.js")
+    filename = "index.js"
+  }
 
-# Add source code zip to bucket
-resource "google_storage_bucket_object" "zip" {
-  # Append file MD5 to force bucket to be recreated
-  name   = "source.zip#${data.archive_file.source.output_md5}"
-  bucket = google_storage_bucket.bucket.name
-  source = data.archive_file.source.output_path
+  source {
+    content  = file("${path.module}/scripts/start_instance/package.json")
+    filename = "package.json"
+  }
+  
+  depends_on = [
+    resource.null_resource.dummy_trigger,
+  ]
 }
 
 # Enable Cloud Functions API
