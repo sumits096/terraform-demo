@@ -1,0 +1,2 @@
+project = "terraform-deployment-demo"
+region  = "us-central1"
