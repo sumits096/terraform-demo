@@ -82,8 +82,8 @@ resource "google_cloudfunctions_function_iam_member" "invoker" {
 }
 
 # Deploy image to Cloud Run
-resource "google_cloud_run_service" "mywebapp" {
-  name     = "mywebapp"
+resource "google_cloud_run_service" "myterraformwebapp" {
+  name     = "myterraformwebapp"
   location = "us-central1"
   template {
     spec {
@@ -110,8 +110,8 @@ data "google_iam_policy" "noauth" {
 
 # Enable public access on Cloud Run service
 resource "google_cloud_run_service_iam_policy" "noauth" {
-  location    = google_cloud_run_service.mywebapp.location
-  project     = google_cloud_run_service.mywebapp.project
-  service     = google_cloud_run_service.mywebapp.name
+  location    = google_cloud_run_service.myterraformwebapp.location
+  project     = google_cloud_run_service.myterraformwebapp.project
+  service     = google_cloud_run_service.myterraformwebapp.name
   policy_data = data.google_iam_policy.noauth.policy_data
 }
