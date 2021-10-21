@@ -88,7 +88,7 @@ resource "google_cloud_run_service" "mywebapp" {
   template {
     spec {
       containers {
-        image = "gcr.io/terraform-cr/webapp"
+        image = ""us-docker.pkg.dev/cloudrun/container/hello""
       }
     }
   }
