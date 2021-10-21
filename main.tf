@@ -66,30 +66,6 @@ resource "google_project_service" "run_api" {
   disable_on_destroy = true
 }
 
-# Create Cloud Function
-resource "google_cloudfunctions_function" "function" {
-  name    = "function-test"
-  project = var.project
-  region  = var.region
-  runtime = "nodejs14"
-
-  available_memory_mb   = 128
-  source_archive_bucket = google_storage_bucket.bucket.name
-  source_archive_object = google_storage_bucket_object.zip.name
-  trigger_http          = true
-  entry_point           = "helloworld"
-}
-
-# Create IAM entry so all users can invoke the function
-resource "google_cloudfunctions_function_iam_member" "invoker" {
-  project        = google_cloudfunctions_function.function.project
-  region         = google_cloudfunctions_function.function.region
-  cloud_function = google_cloudfunctions_function.function.name
-
-  role   = "roles/cloudfunctions.invoker"
-  member = "allUsers"
-}
-
 # Deploy image to Cloud Run
 resource "google_cloud_run_service" "myterraformwebapp" {
   name     = "myterraformwebapp"
