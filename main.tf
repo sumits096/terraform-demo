@@ -7,11 +7,6 @@ terraform {
   }
 }
 
-locals {
-  timestamp = formatdate("YYMMDDhhmmss", timestamp())
-    root_dir = abspath("../")
-}
-
 provider "google" {
   credentials = file("service-account.json")
   project = var.project
@@ -19,62 +14,46 @@ provider "google" {
   zone    = "us-central1-c"
 }
 
-# Compress source code
-data "archive_file" "source" {
-  type        = "zip"
-  source_dir  = local.root_dir
-  output_path = "/tmp/function-${local.timestamp}.zip"
+resource "google_project_service" "api" {
+ for each = toset([
+  "cloudresourcemanager.googleapis.com",
+  "compute.googleapis.com"
+ ])
+ disable_on_distroy = false
+ service = each.value
 }
 
-# Create bucket that will host the source code
-resource "google_storage_bucket" "bucket" {
-  name = "${var.project}-function"
+resource "google_compute_firewall" "web" {
+  name    = "web-access"
+  network = "default"
+  source_ranges = ["0.0.0.0/0"]
+
+  allow {
+    protocol = "tcp"
+    ports    = ["80", "8080", "1000-2000"]
+  }
 }
 
-# Add source code zip to bucket
-resource "google_storage_bucket_object" "zip" {
-  # Append file MD5 to force bucket to be recreated
-  name   = "source.zip#${data.archive_file.source.output_md5}"
-  bucket = google_storage_bucket.bucket.name
-  source = data.archive_file.source.output_path
+resource "google_compute_instance" "my_web_server" {
+  name         = "my_gcp_web_server"
+  machine_type = "f1-micro"
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-9"
+    }
+  }
+
+  network_interface {
+    network = "default"
+
+    access_config {
+      // Ephemeral public IP
+    }
+  }
+
+  metadata_startup_script = "echo hi > /test.txt"
+
+  depends_on = [google_project_service.api, google_compute_firewall.web]
 }
 
-# Enable Cloud Functions API
-resource "google_project_service" "cf" {
-  project = var.project
-  service = "cloudfunctions.googleapis.com"
-
-  disable_dependent_services = true
-  disable_on_destroy         = false
-}
-
-# Enable Cloud Build API
-resource "google_project_service" "cb" {
-  project = var.project
-  service = "cloudbuild.googleapis.com"
-
-  disable_dependent_services = true
-  disable_on_destroy         = false
-}
-
-# Create Cloud Function
-resource "google_cloudfunctions_function" "function" {
-  name    = "function-test"
-  runtime = "nodejs12"
-
-  available_memory_mb   = 128
-  source_archive_bucket = google_storage_bucket.bucket.name
-  source_archive_object = google_storage_bucket_object.zip.name
-  trigger_http          = true
-  entry_point           = "helloword"
-}
-
-# Create IAM entry so all users can invoke the function
-resource "google_cloudfunctions_function_iam_member" "invoker" {
-  project        = google_cloudfunctions_function.function.project
-  region         = google_cloudfunctions_function.function.region
-  cloud_function = google_cloudfunctions_function.function.name
-
-  role   = "roles/cloudfunctions.invoker"
-  member = "allUsers"
-}
