@@ -9,6 +9,7 @@ terraform {
 
 locals {
   timestamp = formatdate("YYMMDDhhmmss", timestamp())
+    root_dir = abspath("../")
 }
 
 provider "google" {
@@ -21,9 +22,8 @@ provider "google" {
 # Compress source code
 data "archive_file" "source" {
   type        = "zip"
-  source_file = "../../"
-  output_path = "../../files/function-${local.timestamp}.zip"
-  # excludes    = [ "../../terraform" ]
+  source_dir  = local.root_dir
+  output_path = "/tmp/function-${local.timestamp}.zip"
 }
 
 # Create bucket that will host the source code
