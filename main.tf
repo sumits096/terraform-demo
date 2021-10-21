@@ -19,7 +19,7 @@ resource "google_project_service" "api" {
   "cloudresourcemanager.googleapis.com",
   "compute.googleapis.com"
  ])
- disable_on_distroy = false
+ disable_on_destroy = false
  service = each.value
 }
 
