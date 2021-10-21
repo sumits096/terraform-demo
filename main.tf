@@ -20,7 +20,7 @@ provider "google" {
 }
 
 resource "google_storage_bucket" "bucket" {
-  name = "test-bucket"
+  name = var.project
 }
 
 resource "google_storage_bucket_object" "archive" {
