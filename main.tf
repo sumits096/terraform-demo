@@ -35,7 +35,7 @@ resource "google_compute_firewall" "web" {
 }
 
 resource "google_compute_instance" "my_web_server" {
-  name         = "my_gcp_web_server"
+  name         = "my-gcp-web-server"
   machine_type = "f1-micro"
 
   boot_disk {
