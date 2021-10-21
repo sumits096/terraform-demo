@@ -21,9 +21,9 @@ provider "google" {
 
 # Compress source code
 data "archive_file" "source" {
-  type        = "zip"
-  source_dir  = local.root_dir
-  output_path = "/tmp/function-${local.timestamp}.zip"
+  type = "zip"
+  source_dir = "${path.module}"
+  output_path = ${path.module}/source.zip"
 }
 
 # Create bucket that will host the source code
