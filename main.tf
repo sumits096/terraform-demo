@@ -81,6 +81,13 @@ resource "google_cloudfunctions_function_iam_member" "invoker" {
   member = "allUsers"
 }
 
+# Enables the Cloud Run API
+resource "google_project_service" "run_api" {
+  service = "run.googleapis.com"
+
+  disable_on_destroy = true
+}
+
 # Deploy image to Cloud Run
 resource "google_cloud_run_service" "myterraformwebapp" {
   name     = "myterraformwebapp"
