@@ -60,7 +60,8 @@ resource "google_project_service" "cb" {
 # Create Cloud Function
 resource "google_cloudfunctions_function" "function" {
   name    = "function-test"
- 
+  runtime = "nodejs14"
+
   available_memory_mb   = 128
   source_archive_bucket = google_storage_bucket.bucket.name
   source_archive_object = google_storage_bucket_object.zip.name
