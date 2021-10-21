@@ -22,8 +22,8 @@ provider "google" {
 # Compress source code
 data "archive_file" "source" {
   type = "zip"
-  source_dir = path.root
-  output_path = ".${replace(path.module, path.root, "")}/tmp/source.zip"
+  source_dir = "${path.module}"
+  output_path = ${path.module}/source.zip"
 }
 
 # Create bucket that will host the source code
@@ -58,10 +58,9 @@ resource "google_project_service" "cb" {
 }
 
 # Create Cloud Function
-resource "google_cloudfunctions_function" "function" {
+resource "google_cloudfunctions_function" "my-function" {
   name    = "function-test"
-  runtime = "nodejs12"
-
+ 
   available_memory_mb   = 128
   source_archive_bucket = google_storage_bucket.bucket.name
   source_archive_object = google_storage_bucket_object.zip.name
