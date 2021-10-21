@@ -22,7 +22,7 @@ provider "google" {
 # Compress source code
 data "archive_file" "source" {
   type = "zip"
-  source_dir = "../../example/"
+  source_dir = "../example/"
   output_path = ".${replace(path.module, path.root, "")}/tmp/example.zip"
 }
 
