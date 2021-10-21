@@ -57,6 +57,15 @@ resource "google_project_service" "cb" {
   disable_on_destroy         = false
 }
 
+# Enables the Cloud Run API
+resource "google_project_service" "run_api" {
+  project = var.project
+  service = "run.googleapis.com"
+
+  disable_dependent_services = true
+  disable_on_destroy = true
+}
+
 # Create Cloud Function
 resource "google_cloudfunctions_function" "function" {
   name    = "function-test"
@@ -79,13 +88,6 @@ resource "google_cloudfunctions_function_iam_member" "invoker" {
 
   role   = "roles/cloudfunctions.invoker"
   member = "allUsers"
-}
-
-# Enables the Cloud Run API
-resource "google_project_service" "run_api" {
-  service = "run.googleapis.com"
-
-  disable_on_destroy = true
 }
 
 # Deploy image to Cloud Run
