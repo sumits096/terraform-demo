@@ -22,8 +22,8 @@ provider "google" {
 # Compress source code
 data "archive_file" "source" {
   type = "zip"
-  source_dir = "../example/"
-  output_path = ".${replace(path.module, path.root, "")}/tmp/example.zip"
+  source_dir = "index.js"
+  output_path = "source.zip"
 }
 
 # Create bucket that will host the source code
