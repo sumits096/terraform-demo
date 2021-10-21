@@ -23,7 +23,7 @@ provider "google" {
 data "archive_file" "source" {
   type = "zip"
   source_dir = "${path.module}"
-  output_path = ${path.module}/source.zip"
+  output_path = "${path.module}/source.zip"
 }
 
 # Create bucket that will host the source code
