@@ -20,7 +20,7 @@ provider "google" {
 }
 
 resource "google_storage_bucket" "bucket" {
-  name = var.project
+  name = "terraform-deployment-demo-bucket"
 }
 
 resource "google_storage_bucket_object" "archive" {
