@@ -52,7 +52,8 @@ resource "google_compute_instance" "my_web_server" {
     }
   }
 
-  metadata_startup_script = "echo hi > /test.txt"
+  metadata_startup_script = <<EOF "echo hi > /test.txt" 
+  EOF
 
   depends_on = [google_project_service.api, google_compute_firewall.web]
 }
