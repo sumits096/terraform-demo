@@ -60,6 +60,8 @@ resource "google_project_service" "cb" {
 # Create Cloud Function
 resource "google_cloudfunctions_function" "function" {
   name    = "function-test"
+  project = var.project
+  region  = var.region
   runtime = "nodejs14"
 
   available_memory_mb   = 128
