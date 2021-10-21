@@ -19,13 +19,9 @@ provider "google" {
   zone    = "us-central1-c"
 }
 
-resource "google_storage_bucket" "bucket" {
-  name = "terraform-deployment-demo-bucket"
-}
-
 resource "google_storage_bucket_object" "archive" {
   name   = "index.zip"
-  bucket = google_storage_bucket.bucket.name
+  bucket = "terraform-deployment-demo-bucket"
   source = "./path/to/zip/file/which/contains/code"
 }
 
@@ -35,8 +31,8 @@ resource "google_cloudfunctions_function" "function" {
   runtime     = "nodejs14"
 
   available_memory_mb   = 128
-  source_archive_bucket = google_storage_bucket.bucket.name
-  source_archive_object = google_storage_bucket_object.archive.name
+  source_archive_bucket = "terraform-deployment-demo-bucket"
+  source_archive_object = "index.zip"
   trigger_http          = true
   entry_point           = "helloGET"
 }
