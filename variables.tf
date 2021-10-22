@@ -1,5 +1,5 @@
 variable "project" {
-    default = "terraform-deployment-demo"
+    default = "connectors-playground"
 }
 
 variable "region" {
@@ -7,7 +7,7 @@ variable "region" {
 }
 
 variable "github_repository" {
-    default = "https://github.com/sumitshinde/terraform-demo.git"
+    default = ""
 }
 
 variable "github_owner" {
