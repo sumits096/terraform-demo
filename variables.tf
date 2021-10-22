@@ -1,5 +1,5 @@
 variable "project" {
-    default = "connectors-playground"
+    default = "terraform-deployment-demo"
 }
 
 variable "region" {
