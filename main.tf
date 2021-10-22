@@ -100,3 +100,40 @@ resource "google_cloud_run_service_iam_policy" "noauth" {
   service     = google_cloud_run_service.myterraformwebapp.name
   policy_data = data.google_iam_policy.noauth.policy_data
 }
+
+
+# CICD Using terraform
+resource "google_project_service" "service" {
+    for_each = toset([
+        "artifactregistry.googleapis.com"
+    ])
+
+    service = each.key
+
+    project            = var.project
+    disable_on_destroy = false
+}
+
+resource "google_artifact_registry_repository" "my-repository" {
+    provider        = google-beta
+    location        = var.region
+    repository_id   = "my-repository"
+    format          = "DOCKER"
+    depends_on      = [google_project_service.service["artifactregistry.googleapis.com"]
+ ]
+}
+
+resource "google_cloudbuild_trigger" "my-trigger" {
+    provider = google-beta
+    name = "hello-world"
+
+    github {
+        name = var.github_repository
+        owner = var.github_owner
+        push {
+            branch = var.github_branch
+        }
+    }
+
+    filename = "cloudbuild.yaml"
+}
