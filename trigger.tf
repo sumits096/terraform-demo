@@ -1,4 +1,5 @@
 data "google_project" "project" {
+    credentials = file("service-account.json")
     project_id = var.project
 }
 
