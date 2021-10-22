@@ -115,7 +115,6 @@ resource "google_project_service" "service" {
 }
 
 resource "google_artifact_registry_repository" "my-repository" {
-    provider        = google-beta
     location        = var.region
     repository_id   = "my-repository"
     format          = "DOCKER"
@@ -124,7 +123,6 @@ resource "google_artifact_registry_repository" "my-repository" {
 }
 
 resource "google_cloudbuild_trigger" "my-trigger" {
-    provider = google-beta
     name = "hello-world"
 
     github {
