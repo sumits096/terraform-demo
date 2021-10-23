@@ -12,5 +12,5 @@ output "repository_http_url" {
 }
 
 output "google_service_account_email" {
-  value = google_service_account.sa.email
+  value = "terraform-deployment-demo-sa@terraform-deployment-demo.iam.gserviceaccount.com"
 }
