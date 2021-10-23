@@ -51,7 +51,7 @@ resource "google_cloudbuild_trigger" "cloud_build_trigger" {
 
   filename = "cloudbuild.yaml"
   substitutions = {
-    _SERVICE_ACCOUNT_EMAIL = google_service_account.service_account.email
+    _SERVICE_ACCOUNT_EMAIL = google_service_account.sa.email
     _SERVICE_NAME= var.service_name
     _REGION = var.region
   }
@@ -126,7 +126,7 @@ resource "google_project_service" "iam" {
   disable_on_destroy = false
 }
 
-resource "google_service_account" "service_account" {
+resource "google_service_account" "sa" {
   account_id = var.service_account_name
   display_name = "A Service Account email to access Google Sheet"
   depends_on = [google_project_service.iam]

@@ -12,5 +12,5 @@ output "repository_http_url" {
 }
 
 output "google_service_account_email" {
-  value = google_service_account.service_account.email
+  value = google_service_account.sa.email
 }

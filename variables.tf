@@ -48,5 +48,5 @@ variable "image_name" {
 variable "service_account_name" {
     description = "The name of the Service Account."
     type        = string
-    default     = "terraform-deployment-demo-service-account"
+    default     = "terraform-deployment-demo-sa"
 }
