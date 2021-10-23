@@ -3,7 +3,7 @@ output "project_id" {
 }
 
 output "url" {
-  value = "${google_cloud_run_service.my-service.status[0].url}"
+  value = "${google_cloud_run_service.gcp_cloud_run_service.status[0].url}"
 }
 
 output "repository_http_url" {
@@ -12,5 +12,5 @@ output "repository_http_url" {
 }
 
 output "google_service_account_email" {
-  value = google_service_account.sa.email
+  value = google_service_account.service_account.email
 }

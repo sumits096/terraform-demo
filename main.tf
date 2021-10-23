@@ -51,7 +51,7 @@ resource "google_cloudbuild_trigger" "cloud_build_trigger" {
 
   filename = "cloudbuild.yaml"
   substitutions = {
-    _SERVICE_ACCOUNT_EMAIL = google_service_account.sa.email
+    _SERVICE_ACCOUNT_EMAIL = google_service_account.service_account.email
     _SERVICE_NAME= var.service_name
     _REGION = var.region
   }
