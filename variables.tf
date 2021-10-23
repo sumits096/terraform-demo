@@ -30,13 +30,13 @@ variable "branch_name" {
 variable "service_name" {
     description = "The name of the Cloud Run service to deploy."
     type        = string
-    default     = "config-service"
+    default     = "gcp-cloud-run-service"
 }
 
 variable "repository_name" {
     description = "Name of the Google Cloud Source Repository to create."
     type        = string
-    default     = "terraform-demo-repo"
+    default     = "terraform-demo-repo-tests"
 }
 
 variable "image_name" {

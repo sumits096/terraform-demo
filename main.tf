@@ -82,25 +82,36 @@ resource "google_project_service" "run" {
   disable_on_destroy = false
 }
 
-resource "google_cloud_run_service" "my-service" {
+resource "google_cloud_run_service" "gcp_cloud_run_service" {
+  project = var.project_name
   name = var.service_name
   location = var.region
-
   template  {
     spec {
-    containers {
-            image = "gcr.io/cloudrun/hello"
+      containers {
+        image = "gcr.io/cloudrun/hello"
+      }
     }
-  }
   }
   depends_on = [google_project_service.run]
 }
 
-resource "google_cloud_run_service_iam_member" "allUsers" {
-  service  = google_cloud_run_service.my-service.name
-  location = google_cloud_run_service.my-service.location
-  role     = "roles/run.invoker"
-  member   = "allUsers"
+# Create public access
+data "google_iam_policy" "noauth" {
+  binding {
+    role = "roles/run.invoker"
+    members = [
+      "allUsers",
+    ]
+  }
+}
+
+# Enable public access on Cloud Run service
+resource "google_cloud_run_service_iam_policy" "noauth" {
+  location    = google_cloud_run_service.gcp_cloud_run_service.location
+  project     = google_cloud_run_service.gcp_cloud_run_service.project
+  service     = google_cloud_run_service.gcp_cloud_run_service.name
+  policy_data = data.google_iam_policy.noauth.policy_data
 }
 
 
@@ -115,7 +126,7 @@ resource "google_project_service" "iam" {
   disable_on_destroy = false
 }
 
-resource "google_service_account" "sa" {
+resource "google_service_account" "service_account" {
   account_id = var.service_account_name
   display_name = "A Service Account email to access Google Sheet"
   depends_on = [google_project_service.iam]
