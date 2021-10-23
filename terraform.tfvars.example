@@ -1,0 +1,6 @@
+project_name = "terraform-deployment-demo"
+region = "us-central1"
+zone = "us-central1-a"
+gcr_region = "us"
+service_name = "terraform-deployment-demo-sa"
+repository_name = "gcp-cloud-run-service"
