@@ -36,7 +36,7 @@ variable "service_name" {
 variable "repository_name" {
     description = "Name of the Google Cloud Source Repository to create."
     type        = string
-    default     = "config-app"
+    default     = "terraform-demo-repo"
 }
 
 variable "image_name" {
